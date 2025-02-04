@@ -6,8 +6,11 @@ const public_users = express.Router();
 
 
 public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    users.push({
+        "username":req.query.username,
+        "password":req.query.password
+    });
+    res.send("The user " + req.query.username + " has been added");
 });
 
 // Get the book list available in the shop
