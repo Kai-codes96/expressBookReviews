@@ -12,7 +12,7 @@ public_users.post("/register", (req,res) => {
     if (username && password) {
         if (!isValid(username)) {
             users.push({"username": username, "password": password});
-            return res.status(200).send("User successfully added to the system");
+            return res.status(200).send(`User ${username} has been added to the system!`);
         } else {
             return res.status(404).json({message: "User already in the system"});
         }
@@ -43,7 +43,7 @@ public_users.get('/author/:author',function (req, res) {
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
     const titleAuth = Object.values(books).filter((titles) => titles.title === title);
-    res.send(titleAuth);
+    res.send(JSON.stringify(titleAuth));
 });
 
 //  Get book review

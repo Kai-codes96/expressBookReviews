@@ -46,7 +46,7 @@ regd_users.post("/login", (req,res) => {
         req.session.authorization = {
             accessToken, username
         }
-        return res.status(200).send("User successfully logged in");
+        return res.status(200).send(`User succesfully ${username} login!`);
     } else {
         return res.status(208).json({message: "Invalid login information"});
     }
@@ -65,14 +65,18 @@ regd_users.put("/auth/review/:title", (req, res) => {
         if (review) {
             filtered_title.reviews = review;
         }
-        res.send(`${user} has added a review for ${filtered_title}`);
+        res.send(`${user} has added a review for ${title}`);
     }
 });
 
 regd_users.delete("/auth/review/:title", (req, res) => {
-    const username = req.body.username;
-    users = users.filter((user) => users.username != username);
-    res.send(`${username} has been deleted!`);
+    const title = req.params.title;
+    let bookTitle = Object.values(books).filter((book) => book.title === title);
+    let review = req.query.reviews;
+    if (review) {
+        bookTitle.reviews.pop()
+    }
+    res.send(`${bookTitle} review has been deleted!`);
 })
 
 module.exports.authenticated = regd_users;
