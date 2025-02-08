@@ -3,6 +3,7 @@ var books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
+const axios = require('axios');
 
 
 public_users.post("/register", (req,res) => {
@@ -26,6 +27,17 @@ public_users.get('/',function (req, res) {
     return res.send(JSON.stringify(books));
 });
 
+async function getData() {
+    try {
+        let response = await axios.get('https://kayinwalker1-5000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/');
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error posting Data:', error);
+    }
+}
+
+getData();
+
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
@@ -39,12 +51,34 @@ public_users.get('/author/:author',function (req, res) {
     return res.send(authorAuth);
 });
 
+async function getAuthorData() {
+    try {
+        let response = await axios.get('https://kayinwalker1-5000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/author/:author');
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error posting Data:', error);
+    }
+}
+
+getAuthorData();
+
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
     const titleAuth = Object.values(books).filter((titles) => titles.title === title);
     res.send(JSON.stringify(titleAuth));
 });
+
+async function getTitleData() {
+    try {
+        let response = await axios.get('https://kayinwalker1-5000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/title/:title');
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error posting Data:', error);
+    }
+}
+
+getTitleData();
 
 //  Get book review
 public_users.get('/review/:title',function (req, res) {
